@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.chan.news.domain.Comment" table="COMMENTS" dynamic-insert="true">
+    	
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+    
+        <property name="content" not-null="true"
+        	type="java.lang.String" column="CONTENT" >
+        </property>
+        
+      	<!-- 多对一映射 -->  
+        <many-to-one name="news" column="NEWS_ID"  
+        	class="com.chan.news.domain.News"  
+        	lazy="false"
+        	not-null="true"  
+        	fetch="join" /> 
+        <!-- 映射user到comment的一对多关联，即comment到user的多对一关联
+        	一对多单向关联关系，可以从多的一方查询到一的一方，
+        	但从一的一方查询不到多的一方。
+        	not null 一条评论必须来自一个用户 
+        -->
+        <many-to-one name="user"  
+	        column="USER_ID"  
+	        class="com.chan.news.domain.User"  
+	        lazy="false"
+	        not-null="true" /> 
+		
+    </class>
+    
+</hibernate-mapping>

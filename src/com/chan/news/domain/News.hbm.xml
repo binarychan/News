@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.chan.news.domain.News" table="NEWSES" dynamic-insert="true">
+    	
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        
+    	<!-- 为新闻标题创建索引，长度为50 -->
+        <property name="title" not-null="true"
+        	index="title_index" length="50"
+        	type="java.lang.String" column="TITLE" >
+        </property>
+        
+        <!-- 新闻导语，长度为60 -->
+        <property name="summary" type="java.lang.String">
+            <column name="SUMMARY" length="60" />
+        </property>
+        
+        <!-- 新闻内容，长文本的映射为 Hibernate 中的text -->
+        <property name="content" type="text">
+            <column name="CONTENT" />
+        </property>
+
+        <!-- 新闻发布时间映射为Hibernate中的timestamp -->
+        <property name="publishTime" type="timestamp" update="false" >
+        	<column name="PUBLISH_TIME" default="NOW()" />
+        </property>
+        
+        <!-- 新闻跟帖数目 -->
+		<property name="followNum" type="java.lang.Integer">
+			<column default="0" name="FOLLOW_NUM" />
+		</property>
+		
+		<property name="picUrl" type="java.lang.String">
+			<column name="PIC_URL"></column>
+		</property>
+		
+		<property name="newsCategory" type="java.lang.String">
+			<column name="NEWS_CATEGORY" length="10" index="category_index"></column>
+		</property>
+		
+		<!-- 新闻评论的映射，为了能在1的一端查询到多的一端，使用双向关联映射 -->
+		<set name="comments" table="COMMENTS" 
+        	inverse="true" lazy="true"
+        	batch-size="2" fetch="join" >
+        	<key column="NEWS_ID" />
+        	<one-to-many class="com.chan.news.domain.Comment" />
+        </set> 
+		
+    </class>
+    
+</hibernate-mapping>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+    <package name="default" namespace="/" extends="struts-default,json-default">
+
+		<action name="registerPro"
+			class="com.chan.news.action.RegisterAction">
+			<!-- 注册成功后直接为用户登录，跳转到首页 -->
+			<result type="redirect">/WEB-INF/content/index.jsp</result>
+		</action>
+		
+		<action name="addNewsPro"
+			class="com.chan.news.action.AddNewsAction">
+			<!-- 添加新闻 -->
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">image/png,image/jpeg,image/gif</param>
+				<param name="maximumSize">3000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"/>
+			
+			<result>/WEB-INF/content/index.jsp</result>
+		</action>
+
+		<action name="getNewsesPro"
+			class="com.chan.news.action.GetNewsesAction">
+			<!-- 返回Json字符串给客户端 -->
+			<result type="json">
+				<param name="includeProperties">
+					newses\[\d+\]\.id,
+					newses\[\d+\]\.title,
+ 					newses\[\d+\]\.content,
+ 					newses\[\d+\]\.summary,
+ 					newses\[\d+\]\.followNum,
+ 					newses\[\d+\]\.publishTime,
+ 					newses\[\d+\]\.newsCategory,
+ 					newses\[\d+\]\.picUrl
+				</param>
+			</result>
+		</action>
+
+        <action name="*">
+        	<result>/WEB-INF/content/{1}.jsp</result>
+        </action>
+        
+    </package>
+
+</struts>

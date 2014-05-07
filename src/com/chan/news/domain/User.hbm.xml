@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.chan.news.domain.User" table="USERS" dynamic-insert="true">
+    	
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <!-- 指定主键的生成方式, native: 使用数据库本地方式 -->
+            <generator class="native" />
+        </id>
+    
+        <property name="name" not-null="true" unique="true"
+        	index="username_index" length="20"
+        	type="java.lang.String" column="NAME" >
+        </property>
+        
+        <property name="email" type="java.lang.String" unique="true">
+            <column name="EMAIL" length="30"/>
+        </property>
+        
+		<property name="pass" type="java.lang.String">
+			<column name="PASS" length="18" />
+		</property>
+		
+		<property name="points" type="java.lang.Long">
+			<column name="POINTS" />
+		</property>
+		
+    </class>
+    
+</hibernate-mapping>
